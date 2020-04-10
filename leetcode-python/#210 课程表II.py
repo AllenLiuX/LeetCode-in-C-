@@ -27,5 +27,36 @@
 # # 通过 DFS 进行拓扑排序 - 一个关于Coursera的精彩视频教程（21分钟），介绍拓扑排序的基本概念。
 # # 拓扑排序也可以通过 BFS 完成。
 
+from typing import List
+
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        res = []
+        def dfs(i, adj, flags):
+            if flags[i] == 1:
+                return True  # a loop found
+            if flags[i] == -1:
+                return False
+            flags[i] = 1    #1 is exploring, -1 is already pushed
+            for j in adj[i]:
+                if dfs(j, adj, flags):
+                    return True
+            flags[i] = -1
+            res.insert(0,i)
+            return False
+
+
+        flags = [0 for _ in range(numCourses)]
+        adj = [[] for _ in range(numCourses)]
+        for i, j in prerequisites:
+            adj[j].append(i)
+        # we need to go through all the nodes outside the dfs, because we cannot go up along the tree,
+        # since some flags will remain 1(exploring), and the temp root node can't be aware of the situation that
+        # there is no upper node waiting for its mark of -1. Thus, the loop is basically for going through all the root node.
+        for i in range(numCourses):
+            if dfs(i, adj, flags):
+                return []
+        return res
+
+A = Solution()
+print(A.findOrder(4, [[1,0],[2,0],[3,1],[3,2]]))
