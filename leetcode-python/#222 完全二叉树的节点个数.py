@@ -26,3 +26,4 @@ class Solution:
             elif bot.left == None:
                 temp = temp.left
             else:
+                pass
