@@ -36,7 +36,7 @@ def find_common(head1, head2):
 
 
 if __name__ == '__main__':
-
+    pass
 
 
 
